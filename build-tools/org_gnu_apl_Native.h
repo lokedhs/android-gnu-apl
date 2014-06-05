@@ -15,6 +15,14 @@ extern "C" {
 JNIEXPORT jint JNICALL Java_org_gnu_apl_Native_init
   (JNIEnv *, jclass);
 
+/*
+ * Class:     org_gnu_apl_Native
+ * Method:    evalExpression
+ * Signature: (Ljava/lang/String;)Lorg/gnu/apl/AplValue;
+ */
+JNIEXPORT jobject JNICALL Java_org_gnu_apl_Native_evalExpression
+  (JNIEnv *, jclass, jstring);
+
 #ifdef __cplusplus
 }
 #endif

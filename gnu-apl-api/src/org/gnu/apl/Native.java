@@ -7,4 +7,6 @@ public class Native
     }
 
     public static native int init();
+
+    public static native AplValue evalExpression( String expr ) throws AplException;
 }
