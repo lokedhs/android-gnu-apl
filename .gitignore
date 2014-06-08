@@ -2,3 +2,5 @@ out
 .idea/workspace.xml
 *~
 *.o
+build-tools/libapl.dylib
+build-tools/libapl.so
