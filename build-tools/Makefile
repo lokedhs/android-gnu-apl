@@ -1,4 +1,4 @@
-OBJS = android.o eval_expression.o utils.o
+OBJS = android.o eval_expression.o utils.o java_ostream.o
 
 GNU_APL_SRC = $(HOME)/src/apl-android
 
