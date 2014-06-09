@@ -9,7 +9,7 @@
 
 using namespace std;
 
-void write_string_to_java_stream( JNIEnv *env, jobject writer, const char *s );
+void write_string_to_java_stream( JNIEnv *env, jobject writer, const char *s, std::streamsize n );
 
 template<class T, class traits = std::char_traits<T> >
 class JavaStreambuf : public std::basic_streambuf<T, traits>

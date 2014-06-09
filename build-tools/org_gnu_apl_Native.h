@@ -26,10 +26,10 @@ JNIEXPORT jobject JNICALL Java_org_gnu_apl_Native_evalExpression
 /*
  * Class:     org_gnu_apl_Native
  * Method:    evalWithIo
- * Signature: (Ljava/lang/String;Ljava/io/StringWriter;Ljava/io/StringWriter;Ljava/io/StringWriter;)V
+ * Signature: (Ljava/lang/String;Ljava/io/Writer;Ljava/io/Writer;Ljava/io/Writer;Ljava/io/Writer;)V
  */
 JNIEXPORT void JNICALL Java_org_gnu_apl_Native_evalWithIo
-  (JNIEnv *, jclass, jstring, jobject, jobject, jobject);
+  (JNIEnv *, jclass, jstring, jobject, jobject, jobject, jobject);
 
 #ifdef __cplusplus
 }

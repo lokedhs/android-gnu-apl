@@ -12,10 +12,12 @@ public class Test
             StringWriter cin = new StringWriter();
             StringWriter cout = new StringWriter();
             StringWriter cerr = new StringWriter();
-            Native.evalWithIo( "1+2", cin, cout, cerr );
-            System.out.println( "cin=" + cin.toString() );
-            System.out.println( "cout=" + cout.toString() );
-            System.out.println( "cerr=" + cerr.toString() );
+            StringWriter uerr = new StringWriter();
+            Native.evalWithIo( "1+2", cin, cout, cerr, uerr );
+            System.out.printf( "cin='%s'%n", cin.toString() );
+            System.out.printf( "cout='%s'%n", cout.toString() );
+            System.out.printf( "cerr='%s'%n", cerr.toString() );
+            System.out.printf( "uerr='%s'%n", uerr.toString() );
         } catch( AplException e ) {
             e.printStackTrace();
         }
