@@ -18,12 +18,10 @@ public:
 
 protected:
     typename traits::int_type overflow( typename traits::int_type c ) {
-        std::cout << "overflow called" << std::endl;
         return traits::not_eof( c );
     }
 
     std::streamsize xsputn( const typename traits::char_type *s, std::streamsize n ) {
-        std::cout << "printing:" << n << ":'" << s << "'" << std::endl;
         if( env != NULL && writer != NULL ) {
             write_string_to_java_stream( env, writer, s, n );
         }
@@ -72,9 +70,21 @@ JNIEXPORT void JNICALL Java_org_gnu_apl_Native_evalWithIo( JNIEnv *env, jclass,
     uerr_streambuf.set_writer( uerr );
 
     JniStringWrapper expr_java_str( env, expr );
-    UCS_string expr_ucs( expr_java_str.get_string() );
+    UTF8_string utf8( expr_java_str.get_string() );
+    UCS_string expr_ucs( utf8 );
 
-    Command::process_line( expr_ucs );
+    try {
+        Command::process_line( expr_ucs );
+    }
+    catch( JavaExceptionThrown &e ) {
+        // Exception is already set to the correct value
+    }
+    catch( ErrorWithComment &e ) {
+        jclass exceptionCl = env->FindClass( "org/gnu/apl/AplException" );
+        if( exceptionCl != NULL ) {
+            env->ThrowNew( exceptionCl, e.get_message().c_str() );
+        }
+    }
 
     cin_streambuf.set_writer( NULL );
     cout_streambuf.set_writer( NULL );

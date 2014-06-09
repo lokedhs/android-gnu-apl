@@ -7,7 +7,21 @@
 
 #include <jni.h>
 
-using namespace std;
+class ErrorWithComment
+{
+public:
+    ErrorWithComment( const std::string &message_in ) : message( message_in ) {}
+    std::string get_message( void ) { return message; }
+
+private:
+    std::string message;
+};
+
+class JavaExceptionThrown : public ErrorWithComment
+{
+public:
+    JavaExceptionThrown( const std::string &message_in ) : ErrorWithComment( message_in ) {}
+};
 
 void write_string_to_java_stream( JNIEnv *env, jobject writer, const char *s, std::streamsize n );
 
