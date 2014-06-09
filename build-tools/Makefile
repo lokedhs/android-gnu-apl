@@ -6,15 +6,28 @@ UNAME = $(shell uname)
 ifeq ($(UNAME),Darwin)
 JAVA_HOME = /Library/Java/JavaVirtualMachines/jdk1.7.0_60.jdk/Contents/Home
 JAVA_INCLUDES = -I$(JAVA_HOME)/include -I$(JAVA_HOME)/include/darwin
-SHARED_FLAGS = -dynamiclib -Wl,-undefined,dynamic_lookup
-LIBRARY_EXT = dylib
-APL_LIBRARIES = -lreadline -ldl -lncurses -lpthread -lm -lblas -llapack -lcurses
 else
 JAVA_HOME = /usr/local/jdk1.7.0_45
 JAVA_INCLUDES = -I$(JAVA_HOME)/include -I$(JAVA_HOME)/include/linux
-SHARED_FLAGS = -shared
+endif
+
+CROSSBUILD = $(shell sh -c "cat $(GNU_APL_SRC)/config.status | grep androideabi >/dev/null && echo androideabi")
+ifeq ($(CROSSBUILD),androideabi)
+CC=arm-linux-androideabi-gcc
+CXX=arm-linux-androideabi-g++
 LIBRARY_EXT = so
+SHARED_FLAGS = -shared
+APL_LIBRARIES = -ldl -lm -lgomp
+else
+ifeq ($(UNAME),Darwin)
+LIBRARY_EXT = dylib
+SHARED_FLAGS = -dynamiclib -Wl,-undefined,dynamic_lookup
+APL_LIBRARIES = -lreadline -ldl -lncurses -lpthread -lm -lblas -llapack -lcurses
+else
+LIBRARY_EXT = so
+SHARED_FLAGS = -shared
 APL_LIBRARIES = -lreadline -ldl -lncurses -lpthread -lrt -lm -lgomp -lblas -llapack -lcurses -lnsl
+endif
 endif
 
 LIBNAME = libapl.$(LIBRARY_EXT)

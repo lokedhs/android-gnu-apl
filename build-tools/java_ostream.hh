@@ -35,9 +35,8 @@ protected:
     }
 
     std::streamsize xsputn( const char *s, std::streamsize n ) {
-        std::cout << "xsputn:" << s << ":" << std::endl;
-        write_string_to_java_stream( env, java_writer, s );
-        return strlen( s );
+        write_string_to_java_stream( env, java_writer, s, n );
+        return n;
     }
 
     JNIEnv *env;
