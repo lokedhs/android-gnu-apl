@@ -1,6 +1,7 @@
 out
-.idea/workspace.xml
+/.idea/workspace.xml
 *~
 *.o
-build-tools/libapl.dylib
-build-tools/libapl.so
+/build-tools/libapl.dylib
+/build-tools/libapl.so
+/build-tools/.apl.history
