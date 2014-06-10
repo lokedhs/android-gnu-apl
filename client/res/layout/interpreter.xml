@@ -1,24 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:android="http://schemas.android.com/apk/res/android">
     <ListView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/result_list_view" android:layout_alignParentTop="true" android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true" android:layout_above="@+id/expressionEntry"/>
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/result_list_view" android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true" android:layout_above="@+id/expression_entry"/>
     <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/expressionEntry"
-            android:layout_alignParentStart="true"
-            android:layout_toLeftOf="@+id/button" android:layout_alignParentBottom="true" android:editable="true"
-            android:enabled="true" android:focusable="true"/>
+            android:id="@+id/expression_entry"
+            android:editable="true"
+            android:enabled="true" android:focusable="true"
+            android:layout_alignParentBottom="true" android:layout_alignParentStart="true"/>
     <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/send_label"
-            android:id="@+id/button" android:layout_below="@+id/result_list_view" android:layout_alignParentEnd="true"
+            android:id="@+id/button" android:layout_below="@+id/result_list_view" android:layout_alignParentRight="true"
             android:onClick="sendClicked"/>
+    <android.inputmethodservice.KeyboardView
+            android:id="@+id/keyboard_view"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:visibility="gone" />
 </RelativeLayout>

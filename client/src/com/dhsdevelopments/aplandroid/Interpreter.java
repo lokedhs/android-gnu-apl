@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 import org.gnu.apl.AplException;
 import org.gnu.apl.Native;
 
@@ -17,6 +16,7 @@ public class Interpreter extends Activity
     private ListView resultList;
     private ResultListAdapter resultListAdapter;
     private EditText expressionEntry;
+    private CustomKeyboard customKeyboard;
 
     /**
      * Called when the activity is first created.
@@ -26,13 +26,26 @@ public class Interpreter extends Activity
         super.onCreate( savedInstanceState );
         setContentView( R.layout.interpreter );
 
-        expressionEntry = (EditText)findViewById( R.id.expressionEntry );
+        expressionEntry = (EditText)findViewById( R.id.expression_entry );
         Typeface typeface = Typeface.createFromAsset( getAssets(), "fonts/FreeMono.ttf" );
         expressionEntry.setTypeface( typeface );
 
         resultList = (ListView)findViewById( R.id.result_list_view );
         resultListAdapter = new ResultListAdapter( getLayoutInflater(), typeface );
         resultList.setAdapter( resultListAdapter );
+
+        customKeyboard = new CustomKeyboard( this, R.id.keyboard_view, R.xml.layboard_layout );
+        customKeyboard.registerEditText( R.id.expression_entry );
+    }
+
+    @Override
+    public void onBackPressed() {
+        if( customKeyboard != null && customKeyboard.isCustomKeyboardVisible() ) {
+            customKeyboard.hideCustomKeyboard();
+        }
+        else {
+            super.onBackPressed();
+        }
     }
 
     public void sendClicked( View view ) {
