@@ -16,7 +16,6 @@ public class Interpreter extends Activity
     private ListView resultList;
     private ResultListAdapter resultListAdapter;
     private EditText expressionEntry;
-    private CustomKeyboard customKeyboard;
 
     /**
      * Called when the activity is first created.
@@ -33,19 +32,6 @@ public class Interpreter extends Activity
         resultList = (ListView)findViewById( R.id.result_list_view );
         resultListAdapter = new ResultListAdapter( getLayoutInflater(), typeface );
         resultList.setAdapter( resultListAdapter );
-
-        customKeyboard = new CustomKeyboard( this, R.id.keyboard_view, R.xml.layboard_layout );
-        customKeyboard.registerEditText( R.id.expression_entry );
-    }
-
-    @Override
-    public void onBackPressed() {
-        if( customKeyboard != null && customKeyboard.isCustomKeyboardVisible() ) {
-            customKeyboard.hideCustomKeyboard();
-        }
-        else {
-            super.onBackPressed();
-        }
     }
 
     public void sendClicked( View view ) {

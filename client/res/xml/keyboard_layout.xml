@@ -18,6 +18,22 @@
         NOTE you may need additional resource files and strings to use this
      -->
     <Row>
+        <Key android:codes="72001" android:keyLabel="`" android:keyWidth="8%p" android:keyEdgeFlags="left"/>
+        <Key android:codes="8" android:keyLabel="1" android:keyWidth="8%p"/>
+        <Key android:codes="-2" android:keyLabel="2" android:keyWidth="8%p"/>
+        <Key android:codes="-1" android:keyLabel="3" android:keyWidth="8%p"/>
+        <Key android:codes="33" android:keyLabel="4" android:keyWidth="8%p"/>
+        <Key android:codes="34" android:keyLabel="5" android:keyWidth="8%p"/>
+        <Key android:codes="35" android:keyLabel="6" android:keyWidth="8%p"/>
+        <Key android:codes="36" android:keyLabel="7" android:keyWidth="8%p"/>
+        <Key android:codes="37" android:keyLabel="8" android:keyWidth="8%p"/>
+        <Key android:codes="38" android:keyLabel="9" android:keyWidth="8%p"/>
+        <Key android:codes="39" android:keyLabel="0" android:keyWidth="8%p"/>
+        <Key android:codes="45" android:keyLabel="-" android:keyWidth="8%p"/>
+        <Key android:codes="46" android:keyLabel="=" android:keyWidth="8%p"/>
+    </Row>
+    <!--
+    <Row>
         <Key android:codes="49"    android:keyLabel="1" android:keyWidth="14.583%p" android:keyEdgeFlags="left" />
         <Key android:codes="50"    android:keyLabel="2" android:keyWidth="14.583%p" />
         <Key android:codes="51"    android:keyLabel="3" android:keyWidth="14.583%p" />
@@ -48,4 +64,5 @@
         <Key android:codes="120"   android:keyLabel="x" android:keyWidth="25%p" android:horizontalGap="6.25%p" />
         <Key android:codes="55012" android:keyLabel="tri" android:keyWidth="18.25%p" android:horizontalGap="6.25%p" android:keyEdgeFlags="right" />
     </Row>
+    -->
 </Keyboard>

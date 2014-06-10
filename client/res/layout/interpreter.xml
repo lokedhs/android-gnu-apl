@@ -22,13 +22,4 @@
             android:text="@string/send_label"
             android:id="@+id/button" android:layout_below="@+id/result_list_view" android:layout_alignParentRight="true"
             android:onClick="sendClicked"/>
-    <android.inputmethodservice.KeyboardView
-            android:id="@+id/keyboard_view"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:visibility="gone" />
 </RelativeLayout>

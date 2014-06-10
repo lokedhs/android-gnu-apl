@@ -1,4 +1,4 @@
-package com.dhsdevelopments.aplandroid;
+package com.dhsdevelopments.aplandroid.input1;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -19,12 +19,6 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
-/**
- * When an activity hosts a keyboardView, this class allows several EditText's to register for it.
- *
- * @author Maarten Pennings, extended by SimplicityApks
- * @date 2012 December 23
- */
 class CustomKeyboard implements android.content.DialogInterface.OnClickListener
 {
 
@@ -369,7 +363,7 @@ class CustomKeyboard implements android.content.DialogInterface.OnClickListener
     /**
      * Enables or disables the Haptic feedback on keyboard touches
      *
-     * @param goEnabled true if you want haptic feedback, falso otherwise
+     * @param goEnabled true if you want haptic feedback, false otherwise
      */
     public void enableHapticFeedback( boolean goEnabled ) {
         mKeyboardView.setHapticFeedbackEnabled( goEnabled );
