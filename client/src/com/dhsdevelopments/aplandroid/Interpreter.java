@@ -1,6 +1,7 @@
 package com.dhsdevelopments.aplandroid;
 
 import android.app.Activity;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -15,6 +16,7 @@ public class Interpreter extends Activity
 {
     private ListView resultList;
     private ResultListAdapter resultListAdapter;
+    private EditText expressionEntry;
 
     /**
      * Called when the activity is first created.
@@ -24,14 +26,18 @@ public class Interpreter extends Activity
         super.onCreate( savedInstanceState );
         setContentView( R.layout.interpreter );
 
+        expressionEntry = (EditText)findViewById( R.id.expressionEntry );
+        Typeface typeface = Typeface.createFromAsset( getAssets(), "fonts/FreeMono.ttf" );
+        expressionEntry.setTypeface( typeface );
+
         resultList = (ListView)findViewById( R.id.result_list_view );
-        resultListAdapter = new ResultListAdapter( getLayoutInflater() );
+        resultListAdapter = new ResultListAdapter( getLayoutInflater(), typeface );
         resultList.setAdapter( resultListAdapter );
     }
 
     public void sendClicked( View view ) {
-        EditText expressionEntry = (EditText)findViewById( R.id.expressionEntry );
         String expr = expressionEntry.getText().toString();
+        expressionEntry.setText( "" );
 
         StringWriter writer = new StringWriter();
         try {

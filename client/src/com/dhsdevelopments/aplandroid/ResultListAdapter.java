@@ -1,7 +1,7 @@
 package com.dhsdevelopments.aplandroid;
 
-import android.content.Context;
 import android.database.DataSetObserver;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +16,11 @@ public class ResultListAdapter implements ListAdapter
     private List<DataSetObserver> observers = new ArrayList<>();
     private List<ResultListEntry> entries = new ArrayList<>();
     private LayoutInflater layoutInflater;
+    private Typeface typeface;
 
-    public ResultListAdapter( LayoutInflater layoutInflater ) {
+    public ResultListAdapter( LayoutInflater layoutInflater, Typeface typeface ) {
         this.layoutInflater = layoutInflater;
+        this.typeface = typeface;
     }
 
 
@@ -74,7 +76,12 @@ public class ResultListAdapter implements ListAdapter
 
         ResultListEntry entry = entries.get( position );
 
+        TextView expr = (TextView)resultText.findViewById( R.id.expr );
+        expr.setTypeface( typeface );
+        expr.setText( entry.getExpr() );
+
         TextView content = (TextView)resultText.findViewById( R.id.content );
+        content.setTypeface( typeface );
         content.setText( entry.getResult() );
 
         return resultText;
