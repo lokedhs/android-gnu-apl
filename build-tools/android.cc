@@ -1,4 +1,6 @@
+//#include <android/log.h>
 #include <string>
+#include <vector>
 
 #include "android.hh"
 #include "utils.hh"
@@ -23,13 +25,54 @@ protected:
 
     std::streamsize xsputn( const typename traits::char_type *s, std::streamsize n ) {
         if( env != NULL && writer != NULL ) {
-            write_string_to_java_stream( env, writer, s, n );
+            for( int i = 0 ; i < n ; i++ ) {
+                buf.push_back( s[i] );
+            }
+            int end = buf.size();
+            // At this point we might have a broken UTF-8 sequence at the end
+            if( (buf[buf.size() - 1] & 0x80) == 0x80 ) {
+                // OK, last character is part of a multibyte sequence
+                // Find the start of the sequence
+                int p = end - 1;
+                while( p > 0 && (buf[p] & 0xC0) != 0xC0 ) {
+                    p--;
+                }
+                if( (buf[p] & 0xC0) == 0xC0 ) {
+                    // p now points to the start of the final multibyte sequence
+                    // Check if this sequence is broken
+                    int num_ones = 0;
+                    int v = static_cast<int>(buf[p]) & 0xFF;
+                    while( v & 0x80 ) {
+                        v <<= 1;
+                        num_ones++;
+                    }
+                    // v now contains the number of left-most bits
+                    // this number is equal to the size of the multibyte sequence
+                    if( num_ones > end - p ) {
+                        end = p;
+                    }
+                }
+                else {
+                    end = p;
+                }
+            }
+
+            if( end > 0 ) {
+                char result_buf[end + 1];
+                for( int i = 0 ; i < end ; i++ ) {
+                    result_buf[i] = buf[i];
+                }
+                result_buf[end] = 0;
+                write_string_to_java_stream( env, writer, result_buf, end );
+                buf.erase( buf.begin(), buf.begin() + end );
+            }
         }
         return n;
     }
 
     JNIEnv *env;
     jobject writer;
+    std::vector<typename traits::char_type> buf;
 };
 
 JavaAplStreambuf<char> cin_streambuf;

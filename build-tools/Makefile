@@ -17,7 +17,7 @@ CC=arm-linux-androideabi-gcc
 CXX=arm-linux-androideabi-g++
 LIBRARY_EXT = so
 SHARED_FLAGS = -shared
-APL_LIBRARIES = -ldl -lm -lgomp
+APL_LIBRARIES = -ldl -lm -lgomp -llog
 else
 ifeq ($(UNAME),Darwin)
 LIBRARY_EXT = dylib
@@ -34,8 +34,13 @@ LIBNAME = libapl.$(LIBRARY_EXT)
 
 CXXFLAGS = -g -Wall -fPIC $(JAVA_INCLUDES) -I$(GNU_APL_SRC)/src
 
-all: $(OBJS)
+all:	$(LIBNAME)
+
+$(LIBNAME): $(OBJS)
 	$(CXX) -g -fPIC -rdynamic $(SHARED_FLAGS) -o $(LIBNAME) $(GNU_APL_SRC)/src/apl-*.o $(OBJS) $(APL_LIBRARIES)
+
+copylib: $(LIBNAME)
+	cp $(LIBNAME) ../client/libs/armeabi/$(LIBNAME)
 
 clean:
 	rm -f $(OBJS) $(LIBNAME)
