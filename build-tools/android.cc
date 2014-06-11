@@ -10,6 +10,8 @@
 
 #include "Command.hh"
 
+static jmethodID append;
+
 template<class T, class traits = std::char_traits<T> >
 class JavaAplStreambuf : public std::basic_streambuf<T, traits>
 {
@@ -63,8 +65,22 @@ protected:
                     result_buf[i] = buf[i];
                 }
                 result_buf[end] = 0;
-                write_string_to_java_stream( env, writer, result_buf, end );
+
+                jstring buf_javastring = env->NewStringUTF( result_buf );
+                if( buf_javastring == NULL ) {
+                    throw new JavaExceptionThrown( "Error creating string" );
+                }
+
+                jobject ret = env->CallObjectMethod( writer, append, buf_javastring );
+                if( env->ExceptionCheck() ) {
+                    env->DeleteLocalRef( buf_javastring );
+                    throw JavaExceptionThrown( "Error writing string" );
+                }
+
                 buf.erase( buf.begin(), buf.begin() + end );
+
+                env->DeleteLocalRef( ret );
+                env->DeleteLocalRef( buf_javastring );
             }
         }
         return n;
@@ -90,6 +106,16 @@ int init_apl( int argc, const char *argv[] );
 JNIEXPORT jint JNICALL Java_org_gnu_apl_Native_init( JNIEnv *env, jclass )
 {
     const char *argv[] = { "apl", "--silent", "--rawCIN", NULL };
+
+    jclass javaIoWriterCl = env->FindClass( "java/io/Writer" );
+    if( javaIoWriterCl == NULL ) {
+        return 0;
+    }
+
+    append = env->GetMethodID( javaIoWriterCl, "append", "(Ljava/lang/CharSequence;)Ljava/io/Writer;");
+    if( append == NULL ) {
+        return 0;
+    }
 
     cin_streambuf.set_env( env );
     cout_streambuf.set_env( env );
