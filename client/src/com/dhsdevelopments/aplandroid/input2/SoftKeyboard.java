@@ -52,6 +52,7 @@ public class SoftKeyboard extends InputMethodService
     private LatinKeyboard symbolsShiftedKeyboard;
     private LatinKeyboard qwertyKeyboard;
     private LatinKeyboard symbolsAplKeyboard;
+    private LatinKeyboard symbolsAplShiftedKeyboard;
 
     private LatinKeyboard curKeyboard;
 
@@ -88,6 +89,7 @@ public class SoftKeyboard extends InputMethodService
         symbolsKeyboard = new LatinKeyboard( this, R.xml.symbols );
         symbolsShiftedKeyboard = new LatinKeyboard( this, R.xml.symbols_shift );
         symbolsAplKeyboard = new LatinKeyboard( this, R.xml.symbols_apl );
+        symbolsAplShiftedKeyboard = new LatinKeyboard( this, R.xml.symbols_apl_shift );
     }
 
     /**
@@ -626,6 +628,16 @@ public class SoftKeyboard extends InputMethodService
             symbolsShiftedKeyboard.setShifted( false );
             inputView.setKeyboard( symbolsKeyboard );
             symbolsKeyboard.setShifted( false );
+        }
+        else if( currentKeyboard == symbolsAplKeyboard ) {
+            symbolsAplKeyboard.setShifted( true );
+            inputView.setKeyboard( symbolsAplShiftedKeyboard );
+            symbolsAplShiftedKeyboard.setShifted( true );
+        }
+        else if( currentKeyboard == symbolsAplShiftedKeyboard ) {
+            symbolsAplShiftedKeyboard.setShifted( false );
+            inputView.setKeyboard( symbolsAplKeyboard );
+            symbolsKeyboard.setShifted( false  );
         }
     }
 
