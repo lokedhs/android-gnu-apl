@@ -3,6 +3,7 @@ package com.dhsdevelopments.aplandroid.input2;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.XmlResourceParser;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.inputmethodservice.Keyboard;
 import android.view.inputmethod.EditorInfo;
@@ -10,27 +11,35 @@ import com.dhsdevelopments.aplandroid.R;
 
 public class LatinKeyboard extends Keyboard
 {
-    private Key mEnterKey;
-    private Key mSpaceKey;
+    private Key enterKey;
+    private Key spaceKey;
+    private Typeface typeface;
 
     public LatinKeyboard( Context context, int xmlLayoutResId ) {
         super( context, xmlLayoutResId );
+        init( context );
     }
 
     public LatinKeyboard( Context context, int layoutTemplateResId,
                           CharSequence characters, int columns, int horizontalPadding ) {
         super( context, layoutTemplateResId, characters, columns, horizontalPadding );
+        init( context );
+    }
+
+    private void init( Context context ) {
+        typeface = Typeface.createFromAsset( context.getAssets(), "fonts/FreeMono.ttf" );
     }
 
     @Override
     protected Key createKeyFromXml( Resources res, Row parent, int x, int y,
                                     XmlResourceParser parser ) {
-        Key key = new LatinKey( res, parent, x, y, parser );
+        Key key = new LatinKey( res, parent, x, y, parser, typeface );
+
         if( key.codes[0] == 10 ) {
-            mEnterKey = key;
+            enterKey = key;
         }
         else if( key.codes[0] == ' ' ) {
-            mSpaceKey = key;
+            spaceKey = key;
         }
         return key;
     }
@@ -40,48 +49,52 @@ public class LatinKeyboard extends Keyboard
      * appropriate label on the keyboard's enter key (if it has one).
      */
     void setImeOptions( Resources res, int options ) {
-        if( mEnterKey == null ) {
+        if( enterKey == null ) {
             return;
         }
 
         switch( options & (EditorInfo.IME_MASK_ACTION | EditorInfo.IME_FLAG_NO_ENTER_ACTION) ) {
             case EditorInfo.IME_ACTION_GO:
-                mEnterKey.iconPreview = null;
-                mEnterKey.icon = null;
-                mEnterKey.label = res.getText( R.string.label_go_key );
+                enterKey.iconPreview = null;
+                enterKey.icon = null;
+                enterKey.label = res.getText( R.string.label_go_key );
                 break;
             case EditorInfo.IME_ACTION_NEXT:
-                mEnterKey.iconPreview = null;
-                mEnterKey.icon = null;
-                mEnterKey.label = res.getText( R.string.label_next_key );
+                enterKey.iconPreview = null;
+                enterKey.icon = null;
+                enterKey.label = res.getText( R.string.label_next_key );
                 break;
             case EditorInfo.IME_ACTION_SEARCH:
-                mEnterKey.icon = res.getDrawable( R.drawable.sym_keyboard_search );
-                mEnterKey.label = null;
+                enterKey.icon = res.getDrawable( R.drawable.sym_keyboard_search );
+                enterKey.label = null;
                 break;
             case EditorInfo.IME_ACTION_SEND:
-                mEnterKey.iconPreview = null;
-                mEnterKey.icon = null;
-                mEnterKey.label = res.getText( R.string.label_send_key );
+                enterKey.iconPreview = null;
+                enterKey.icon = null;
+                enterKey.label = res.getText( R.string.label_send_key );
                 break;
             default:
-                mEnterKey.icon = res.getDrawable( R.drawable.sym_keyboard_return );
-                mEnterKey.label = null;
+                enterKey.icon = res.getDrawable( R.drawable.sym_keyboard_return );
+                enterKey.label = null;
                 break;
         }
     }
 
     void setSpaceIcon( final Drawable icon ) {
-        if( mSpaceKey != null ) {
-            mSpaceKey.icon = icon;
+        if( spaceKey != null ) {
+            spaceKey.icon = icon;
         }
     }
 
     static class LatinKey extends Keyboard.Key
     {
-
-        public LatinKey( Resources res, Keyboard.Row parent, int x, int y, XmlResourceParser parser ) {
+        public LatinKey( Resources res, Row parent, int x, int y, XmlResourceParser parser, Typeface typeface ) {
             super( res, parent, x, y, parser );
+//            if( label != null ) {
+//                SpannableString s = new SpannableString( label );
+//                s.setSpan( new CustomTypefaceSpan( "monospace", typeface ), 0, s.length(), 0 );
+//                label = s;
+//            }
         }
 
         /**
@@ -93,5 +106,4 @@ public class LatinKeyboard extends Keyboard
             return super.isInside( x, codes[0] == KEYCODE_CANCEL ? y - 10 : y );
         }
     }
-
 }

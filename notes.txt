@@ -8,3 +8,15 @@ Configure GNU APL:
 
 CXXFLAGS='-g -fPIC' ./configure --host=x86_64-linux --build=arm --with-android
 make
+
+Keyboard layout experiments:
+
+◊⍨  ¨ ¯≢    ≤  ≥ ≠  ∨ ⍱∧ ⍲× ≡ ÷⌹
+
+ ⍳ ⍸ ⍵ ⌽ ∊ ⍷ ∼ ⍉ ↑  ↓ ○ ⍥ ⋆ ⍟ ← → ⍬ ⍝ ⍀ ⍴
+
+⍺ ⊖ ⌈ ⌊ _ ⍫ ∇ ⍒ ∆ ⍋ ∘ ⍤ ' ⌺ ⎕ ⍞ ⊢ ⊣
+
+⊂ ⊃ ∩ ∪ ⊥ ⍎ ⊤ ⍕ | ⌶ ⌷ ⍪ ⍙ ⌿
+
+⍵∊⍴∼
