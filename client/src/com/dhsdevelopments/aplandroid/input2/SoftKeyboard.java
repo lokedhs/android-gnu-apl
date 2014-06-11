@@ -533,12 +533,10 @@ public class SoftKeyboard extends InputMethodService
                 current = symbolsAplKeyboard;
             }
             else {
-                current = qwertyKeyboard;
+                current = symbolsKeyboard;
             }
             inputView.setKeyboard( current );
-            if( current == symbolsAplKeyboard ) {
-                current.setShifted( false );
-            }
+            current.setShifted( false );
         }
         else {
             handleCharacter( primaryCode, keyCodes );
