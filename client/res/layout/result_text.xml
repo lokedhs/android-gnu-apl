@@ -5,12 +5,12 @@
         android:id="@+id/result_text_view"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical" android:paddingBottom="@dimen/apl_result_row_padding">
     <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="New Text"
-            android:id="@+id/expr"/>
+            android:id="@+id/expr" android:paddingLeft="@dimen/apl_input_padding"/>
     <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

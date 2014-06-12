@@ -35,16 +35,18 @@ public class Interpreter extends Activity
     }
 
     public void sendClicked( View view ) {
-        String expr = expressionEntry.getText().toString();
+        String expr = expressionEntry.getText().toString().trim();
         expressionEntry.setText( "" );
 
-        StringWriter writer = new StringWriter();
-        try {
-            Native.evalWithIo( expr, writer, writer, writer, writer );
-            Log.i( "Result:" + writer.toString() );
-            resultListAdapter.addEntry( expr, writer.toString() );
-        } catch( AplException e ) {
-            Log.i( "exception when evaluating expression", e );
+        if( expr.length() > 0 ) {
+            StringWriter writer = new StringWriter();
+            try {
+                Native.evalWithIo( expr, writer, writer, writer, writer );
+                Log.i( "Result:" + writer.toString() );
+                resultListAdapter.addEntry( expr, writer.toString() );
+            } catch( AplException e ) {
+                Log.i( "exception when evaluating expression", e );
+            }
         }
     }
 }
