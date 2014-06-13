@@ -44,6 +44,7 @@ public class Interpreter extends Activity
                 Native.evalWithIo( expr, writer, writer, writer, writer );
                 Log.i( "Result:" + writer.toString() );
                 resultListAdapter.addEntry( expr, writer.toString() );
+                resultList.setSelection( resultListAdapter.getCount() - 1 );
             } catch( AplException e ) {
                 Log.i( "exception when evaluating expression", e );
             }
