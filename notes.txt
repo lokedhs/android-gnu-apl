@@ -18,5 +18,3 @@ Keyboard layout experiments:
 ⍺ ⊖ ⌈ ⌊ _ ⍫ ∇ ⍒ ∆ ⍋ ∘ ⍤ ' ⌺ ⎕ ⍞ ⊢ ⊣
 
 ⊂ ⊃ ∩ ∪ ⊥ ⍎ ⊤ ⍕ | ⌶ ⌷ ⍪ ⍙ ⌿
-
-⍵∊⍴∼
