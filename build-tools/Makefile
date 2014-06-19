@@ -37,7 +37,7 @@ CXXFLAGS = -g -Wall -fPIC $(JAVA_INCLUDES) -I$(GNU_APL_SRC)/src
 all:	$(LIBNAME)
 
 $(LIBNAME): $(OBJS)
-	$(CXX) -g -fPIC -rdynamic $(SHARED_FLAGS) -o $(LIBNAME) $(GNU_APL_SRC)/src/apl-*.o $(OBJS) $(APL_LIBRARIES)
+	$(CXX) -g -fPIC -rdynamic $(SHARED_FLAGS) -o $(LIBNAME) $(GNU_APL_SRC)/src/*.o $(OBJS) $(APL_LIBRARIES)
 
 copylib: $(LIBNAME)
 	cp $(LIBNAME) ../client/libs/armeabi/$(LIBNAME)

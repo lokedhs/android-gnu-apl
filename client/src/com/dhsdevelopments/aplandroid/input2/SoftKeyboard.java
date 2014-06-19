@@ -8,8 +8,12 @@ import android.text.method.MetaKeyKeyListener;
 import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.*;
+import android.view.inputmethod.CompletionInfo;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputConnection;
+import android.view.inputmethod.InputMethodManager;
 import com.dhsdevelopments.aplandroid.R;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -241,14 +245,14 @@ public class SoftKeyboard extends InputMethodService
         // Apply the selected keyboard to the input view.
         inputView.setKeyboard( curKeyboard );
         inputView.closing();
-        final InputMethodSubtype subtype = inputMethodManager.getCurrentInputMethodSubtype();
-        inputView.setSubtypeOnSpaceKey( subtype );
+//        final InputMethodSubtype subtype = inputMethodManager.getCurrentInputMethodSubtype();
+//        inputView.setSubtypeOnSpaceKey( subtype );
     }
 
-    @Override
-    public void onCurrentInputMethodSubtypeChanged( InputMethodSubtype subtype ) {
-        inputView.setSubtypeOnSpaceKey( subtype );
-    }
+//    @Override
+//    public void onCurrentInputMethodSubtypeChanged( InputMethodSubtype subtype ) {
+//        inputView.setSubtypeOnSpaceKey( subtype );
+//    }
 
     /**
      * Deal with the editor reporting movement of its cursor.
@@ -263,7 +267,7 @@ public class SoftKeyboard extends InputMethodService
         // If the current selection in the text view changes, we should
         // clear whatever candidate text we have.
         if( composing.length() > 0 && (newSelStart != candidatesEnd
-                                        || newSelEnd != candidatesEnd) ) {
+                                       || newSelEnd != candidatesEnd) ) {
             composing.setLength( 0 );
             updateCandidates();
             InputConnection ic = getCurrentInputConnection();
@@ -288,7 +292,7 @@ public class SoftKeyboard extends InputMethodService
                 return;
             }
 
-            List<String> stringList = new ArrayList<String>();
+            List<String> stringList = new ArrayList<>();
             for( CompletionInfo ci : completions ) {
                 if( ci != null ) {
                     stringList.add( ci.getText().toString() );
@@ -305,7 +309,7 @@ public class SoftKeyboard extends InputMethodService
      */
     private boolean translateKeyDown( int keyCode, KeyEvent event ) {
         metaState = MetaKeyKeyListener.handleKeyDown( metaState,
-                                                       keyCode, event );
+                                                      keyCode, event );
         int c = event.getUnicodeChar( MetaKeyKeyListener.getMetaState( metaState ) );
         metaState = MetaKeyKeyListener.adjustMetaAfterKeypress( metaState );
         InputConnection ic = getCurrentInputConnection();
@@ -341,7 +345,7 @@ public class SoftKeyboard extends InputMethodService
      * continue to the app.
      */
     @Override
-    public boolean onKeyDown( int keyCode, KeyEvent event ) {
+    public boolean onKeyDown( int keyCode, @NotNull KeyEvent event ) {
         switch( keyCode ) {
             case KeyEvent.KEYCODE_BACK:
                 // The InputMethodService already takes care of the back
@@ -409,14 +413,14 @@ public class SoftKeyboard extends InputMethodService
      * continue to the app.
      */
     @Override
-    public boolean onKeyUp( int keyCode, KeyEvent event ) {
+    public boolean onKeyUp( int keyCode, @NotNull KeyEvent event ) {
         // If we want to do transformations on text being entered with a hard
         // keyboard, we need to process the up events to update the meta key
         // state we are tracking.
         if( PROCESS_HARD_KEYS ) {
             if( predictionOn ) {
                 metaState = MetaKeyKeyListener.handleKeyUp( metaState,
-                                                             keyCode, event );
+                                                            keyCode, event );
             }
         }
 
@@ -454,12 +458,7 @@ public class SoftKeyboard extends InputMethodService
      * Helper to determine if a given character code is alphabetic.
      */
     private boolean isAlphabet( int code ) {
-        if( Character.isLetter( code ) ) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return Character.isLetter( code );
     }
 
     /**
@@ -510,10 +509,9 @@ public class SoftKeyboard extends InputMethodService
         }
         else if( primaryCode == Keyboard.KEYCODE_CANCEL ) {
             handleClose();
-            return;
         }
         else if( primaryCode == LatinKeyboardView.KEYCODE_OPTIONS ) {
-            // Show a menu or somethin'
+            // A menu should possible be displayed here
         }
         else if( primaryCode == Keyboard.KEYCODE_MODE_CHANGE
                  && inputView != null ) {
@@ -530,13 +528,21 @@ public class SoftKeyboard extends InputMethodService
             }
         }
         else if( primaryCode == -1000 && inputView != null ) {
-            Keyboard current = inputView.getKeyboard();
-            if( current == qwertyKeyboard ) {
-                current = symbolsAplKeyboard;
-            }
-            else {
-                current = symbolsKeyboard;
-            }
+//            Keyboard current = inputView.getKeyboard();
+//            if( current == qwertyKeyboard ) {
+//                current = symbolsAplKeyboard;
+//            }
+//            else {
+//                current = symbolsKeyboard;
+//            }
+//            inputView.setKeyboard( current );
+//            current.setShifted( false );
+            Keyboard current = symbolsAplKeyboard;
+            inputView.setKeyboard( current );
+            current.setShifted( false );
+        }
+        else if( primaryCode == -1001 && inputView != null ) {
+            Keyboard current = symbolsKeyboard;
             inputView.setKeyboard( current );
             current.setShifted( false );
         }
@@ -567,7 +573,7 @@ public class SoftKeyboard extends InputMethodService
     private void updateCandidates() {
         if( !completionOn ) {
             if( composing.length() > 0 ) {
-                ArrayList<String> list = new ArrayList<String>();
+                ArrayList<String> list = new ArrayList<>();
                 list.add( composing.toString() );
                 setSuggestions( list, true, true );
             }
@@ -637,7 +643,7 @@ public class SoftKeyboard extends InputMethodService
         else if( currentKeyboard == symbolsAplShiftedKeyboard ) {
             symbolsAplShiftedKeyboard.setShifted( false );
             inputView.setKeyboard( symbolsAplKeyboard );
-            symbolsKeyboard.setShifted( false  );
+            symbolsKeyboard.setShifted( false );
         }
     }
 

@@ -9,14 +9,14 @@
     <Row>
         <Key android:codes="168" android:keyLabel="¨" android:keyEdgeFlags="left"/>
         <Key android:codes="175" android:keyLabel="¯"/>
-        <Key android:codes="8804" android:keyLabel="≤"/>
-        <Key android:codes="60" android:keyLabel="&lt;"/>
-        <Key android:codes="53" android:keyLabel="5"/>
-        <Key android:codes="54" android:keyLabel="6"/>
-        <Key android:codes="55" android:keyLabel="7"/>
-        <Key android:codes="56" android:keyLabel="8"/>
-        <Key android:codes="57" android:keyLabel="9"/>
-        <Key android:codes="48" android:keyLabel="0" android:keyEdgeFlags="right"/>
+        <Key android:codes="8869" android:keyLabel="⊥"/>
+        <Key android:codes="8868" android:keyLabel="⊤"/>
+        <Key android:codes="9014" android:keyLabel="⌶"/>
+        <Key android:codes="9066" android:keyLabel="⍪"/>
+        <Key android:codes="9023" android:keyLabel="⌿"/>
+        <Key android:codes="9015" android:keyLabel="⌷"/>
+        <Key android:codes="9674" android:keyLabel="◊"/>
+        <Key android:codes="9064" android:keyLabel="⍨" android:keyEdgeFlags="right"/>
     </Row>
     ∼
     <Row>
@@ -38,7 +38,7 @@
                 android:isSticky="true" android:keyEdgeFlags="left"/>
         <Key android:codes="9082" android:keyLabel="⍺" />
         <Key android:codes="8968" android:keyLabel="⌈"/>
-        <Key android:codes="8970" android:keyLabel="⌊'"/>
+        <Key android:codes="8970" android:keyLabel="⌊"/>
         <Key android:codes="8711" android:keyLabel="∇"/>
         <Key android:codes="8710" android:keyLabel="∆"/>
         <Key android:codes="8728" android:keyLabel="∘" />
@@ -53,7 +53,7 @@
         <Key android:codes="-3" android:keyIcon="@drawable/sym_keyboard_done"
              android:keyWidth="20%p" android:keyEdgeFlags="left" />
 -->
-        <Key android:codes="-1000" android:keyLabel="123" android:keyWidth="15%p"/>
+        <Key android:codes="-1001" android:keyLabel="123" android:keyWidth="15%p"/>
         <Key android:codes="-2" android:keyLabel="ABC" android:keyWidth="15%p" />
         <Key android:codes="32" android:keyIcon="@drawable/sym_keyboard_space" android:keyWidth="30%p" 
                 android:isRepeatable="true"/>
