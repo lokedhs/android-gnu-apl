@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -36,6 +37,13 @@ public class InterpreterFragment extends Fragment
         resultList = (ListView)rootView.findViewById( R.id.result_list_view );
         resultListAdapter = new ResultListAdapter( inflater, typeface );
         resultList.setAdapter( resultListAdapter );
+        resultList.setOnItemClickListener( new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick( AdapterView<?> parent, View view, int position, long id ) {
+                resultEntryClicked( position );
+            }
+        } );
 
         Button sendButton = (Button)rootView.findViewById( R.id.send_expr_button );
         sendButton.setOnClickListener( new View.OnClickListener()
@@ -47,6 +55,11 @@ public class InterpreterFragment extends Fragment
         } );
 
         return rootView;
+    }
+
+    private void resultEntryClicked( int position ) {
+        ResultListEntry entry = resultListAdapter.getResultListEntry( position );
+        expressionEntry.setText( entry.getExpr() );
     }
 
     public void sendClicked() {

@@ -31,7 +31,7 @@ public class ResultListAdapter implements ListAdapter
 
     @Override
     public boolean isEnabled( int position ) {
-        return false;
+        return true;
     }
 
     @Override
@@ -107,5 +107,9 @@ public class ResultListAdapter implements ListAdapter
         for( DataSetObserver observer : observers ) {
             observer.onChanged();
         }
+    }
+
+    public ResultListEntry getResultListEntry( int position ) {
+        return entries.get( position );
     }
 }
