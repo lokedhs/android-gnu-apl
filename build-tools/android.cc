@@ -1,6 +1,7 @@
 //#include <android/log.h>
 #include <string>
 #include <vector>
+#include <string.h>
 
 #include "android.hh"
 #include "utils.hh"
@@ -21,11 +22,7 @@ public:
     void set_writer( jobject writer_in ) { writer = writer_in; }
 
 protected:
-    typename traits::int_type overflow( typename traits::int_type c ) {
-        return traits::not_eof( c );
-    }
-
-    std::streamsize xsputn( const typename traits::char_type *s, std::streamsize n ) {
+    void put_buffer( const typename traits::char_type *s, std::streamsize n ) {
         if( env != NULL && writer != NULL ) {
             for( int i = 0 ; i < n ; i++ ) {
                 buf.push_back( s[i] );
@@ -83,6 +80,18 @@ protected:
                 env->DeleteLocalRef( buf_javastring );
             }
         }
+    }
+
+    typename traits::int_type overflow( typename traits::int_type c ) {
+        typename traits::char_type buf[2];
+        buf[0] = c;
+        buf[1] = 0;
+        put_buffer( buf, 1 );
+        return traits::not_eof( c );
+    }
+
+    std::streamsize xsputn( const typename traits::char_type *s, std::streamsize n ) {
+        put_buffer( s, n );
         return n;
     }
 
