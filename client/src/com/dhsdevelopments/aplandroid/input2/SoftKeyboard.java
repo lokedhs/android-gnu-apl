@@ -1,5 +1,6 @@
 package com.dhsdevelopments.aplandroid.input2;
 
+import android.annotation.SuppressLint;
 import android.inputmethodservice.InputMethodService;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView;
@@ -102,6 +103,7 @@ public class SoftKeyboard extends InputMethodService
      * is displayed, and every time it needs to be re-created such as due to
      * a configuration change.
      */
+    @SuppressLint("InflateParams")
     @Override
     public View onCreateInputView() {
         inputView = (LatinKeyboardView)getLayoutInflater().inflate( R.layout.input, null );
@@ -116,9 +118,10 @@ public class SoftKeyboard extends InputMethodService
      */
     @Override
     public View onCreateCandidatesView() {
-        candidateView = new CandidateView( this );
-        candidateView.setService( this );
-        return candidateView;
+//        candidateView = new CandidateView( this );
+//        candidateView.setService( this );
+//        return candidateView;
+        return null;
     }
 
     /**
