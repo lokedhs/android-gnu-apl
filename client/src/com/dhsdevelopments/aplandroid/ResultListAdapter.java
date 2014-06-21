@@ -1,5 +1,6 @@
 package com.dhsdevelopments.aplandroid;
 
+import android.app.Activity;
 import android.database.DataSetObserver;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
@@ -13,16 +14,36 @@ import java.util.List;
 
 public class ResultListAdapter implements ListAdapter
 {
+    private final AplNative aplNative;
+    private final AplResultListener resultListener;
     private List<DataSetObserver> observers = new ArrayList<>();
-    private List<ResultListEntry> entries = new ArrayList<>();
+    private List<ResultListEntry> entries;
     private LayoutInflater layoutInflater;
     private Typeface typeface;
 
-    public ResultListAdapter( LayoutInflater layoutInflater, Typeface typeface ) {
+    public ResultListAdapter( final Activity context, LayoutInflater layoutInflater, Typeface typeface ) {
         this.layoutInflater = layoutInflater;
         this.typeface = typeface;
+
+        AplAndroidApp app = (AplAndroidApp)context.getApplicationContext();
+        aplNative = app.getAplNative();
+        synchronized( aplNative ) {
+            List<ResultListEntry> list = aplNative.getResultEntries();
+            entries = new ArrayList<>( list );
+            resultListener = new AplResultListener( context );
+            aplNative.addResultListListener( resultListener );
+        }
     }
 
+    public void close() {
+        aplNative.removeResultListListener( resultListener );
+    }
+
+    private void fireModelChanged() {
+        for( DataSetObserver o : observers ) {
+            o.onChanged();
+        }
+    }
 
     @Override
     public boolean areAllItemsEnabled() {
@@ -102,14 +123,28 @@ public class ResultListAdapter implements ListAdapter
         return entries.isEmpty();
     }
 
-    public void addEntry( String expr, String result ) {
-        entries.add( new ResultListEntry( expr, result ) );
-        for( DataSetObserver observer : observers ) {
-            observer.onChanged();
-        }
-    }
-
     public ResultListEntry getResultListEntry( int position ) {
         return entries.get( position );
+    }
+
+    private class AplResultListener implements AplNative.ResultListListener
+    {
+        private Activity context;
+
+        public AplResultListener( Activity context ) {
+            this.context = context;
+        }
+
+        @Override
+        public void resultUpdated( final ResultListEntry entry ) {
+            context.runOnUiThread( new Runnable()
+            {
+                @Override
+                public void run() {
+                    entries.add( entry );
+                    fireModelChanged();
+                }
+            } );
+        }
     }
 }

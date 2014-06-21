@@ -1,13 +1,18 @@
 package com.dhsdevelopments.aplandroid;
 
 import android.app.Application;
-import org.gnu.apl.Native;
 
 public class AplAndroidApp extends Application
 {
+    private AplNative aplNative;
+
     @Override
     public void onCreate() {
         super.onCreate();
-        Native.init();
+        aplNative = new AplNative();
+    }
+
+    public AplNative getAplNative() {
+        return aplNative;
     }
 }

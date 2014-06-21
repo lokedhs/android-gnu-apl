@@ -18,8 +18,8 @@ class JavaAplStreambuf : public std::basic_streambuf<T, traits>
 {
 public:
     JavaAplStreambuf() : env( NULL ), writer( NULL ) {}
-    void set_env( JNIEnv *env_in ) { env = env_in; }
-    void set_writer( jobject writer_in ) { writer = writer_in; }
+    void set_writer( JNIEnv *env_in, jobject writer_in ) { env = env_in; writer = writer_in; }
+    void unset_writer( void ) { env = NULL; writer = NULL; }
 
 protected:
     void put_buffer( const typename traits::char_type *s, std::streamsize n ) {
@@ -126,11 +126,6 @@ JNIEXPORT jint JNICALL Java_org_gnu_apl_Native_init( JNIEnv *env, jclass )
         return 0;
     }
 
-    cin_streambuf.set_env( env );
-    cout_streambuf.set_env( env );
-    cerr_streambuf.set_env( env );
-    uerr_streambuf.set_env( env );
-
     int ret = init_apl( 3, argv );
     return ret;
 }
@@ -142,10 +137,10 @@ JNIEXPORT void JNICALL Java_org_gnu_apl_Native_evalWithIo( JNIEnv *env, jclass,
                                                            jobject cerr,
                                                            jobject uerr )
 {
-    cin_streambuf.set_writer( cin );
-    cout_streambuf.set_writer( cout );
-    cerr_streambuf.set_writer( cerr );
-    uerr_streambuf.set_writer( uerr );
+    cin_streambuf.set_writer( env, cin );
+    cout_streambuf.set_writer( env, cout );
+    cerr_streambuf.set_writer( env, cerr );
+    uerr_streambuf.set_writer( env, uerr );
 
     JniStringWrapper expr_java_str( env, expr );
     UTF8_string utf8( expr_java_str.get_string() );
@@ -164,8 +159,8 @@ JNIEXPORT void JNICALL Java_org_gnu_apl_Native_evalWithIo( JNIEnv *env, jclass,
         }
     }
 
-    cin_streambuf.set_writer( NULL );
-    cout_streambuf.set_writer( NULL );
-    cerr_streambuf.set_writer( NULL );
-    uerr_streambuf.set_writer( NULL );
+    cin_streambuf.unset_writer();
+    cout_streambuf.unset_writer();
+    cerr_streambuf.unset_writer();
+    uerr_streambuf.unset_writer();
 }

@@ -1,6 +1,7 @@
 package com.dhsdevelopments.aplandroid;
 
 import android.app.Fragment;
+import android.database.DataSetObserver;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,10 +11,6 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import org.gnu.apl.AplException;
-import org.gnu.apl.Native;
-
-import java.io.StringWriter;
 
 public class InterpreterFragment extends Fragment
 {
@@ -35,7 +32,7 @@ public class InterpreterFragment extends Fragment
         expressionEntry.setTypeface( typeface );
 
         resultList = (ListView)rootView.findViewById( R.id.result_list_view );
-        resultListAdapter = new ResultListAdapter( inflater, typeface );
+        resultListAdapter = new ResultListAdapter( getActivity(), inflater, typeface );
         resultList.setAdapter( resultListAdapter );
         resultList.setOnItemClickListener( new AdapterView.OnItemClickListener()
         {
@@ -44,6 +41,7 @@ public class InterpreterFragment extends Fragment
                 resultEntryClicked( position );
             }
         } );
+        resultListAdapter.registerDataSetObserver( new ResultUpdatedObserver() );
 
         Button sendButton = (Button)rootView.findViewById( R.id.send_expr_button );
         sendButton.setOnClickListener( new View.OnClickListener()
@@ -57,6 +55,12 @@ public class InterpreterFragment extends Fragment
         return rootView;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        resultListAdapter.close();
+    }
+
     private void resultEntryClicked( int position ) {
         ResultListEntry entry = resultListAdapter.getResultListEntry( position );
         expressionEntry.setText( entry.getExpr() );
@@ -67,16 +71,16 @@ public class InterpreterFragment extends Fragment
         expressionEntry.setText( "" );
 
         if( expr.length() > 0 ) {
-            StringWriter writer = new StringWriter();
-            try {
-                Native.evalWithIo( expr, writer, writer, writer, writer );
-                Log.i( "Result:" + writer.toString() );
-                resultListAdapter.addEntry( expr, writer.toString() );
-                resultList.setSelection( resultListAdapter.getCount() - 1 );
-            }
-            catch( AplException e ) {
-                Log.i( "exception when evaluating expression", e );
-            }
+            AplNative aplNative = ((AplAndroidApp)getActivity().getApplicationContext()).getAplNative();
+            aplNative.evalAsAsync( expr, null );
+        }
+    }
+
+    private class ResultUpdatedObserver extends DataSetObserver
+    {
+        @Override
+        public void onChanged() {
+            resultList.setSelection( resultListAdapter.getCount() - 1 );
         }
     }
 }

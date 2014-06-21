@@ -10,10 +10,12 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import com.dhsdevelopments.aplandroid.R;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings({ "MismatchedReadAndWriteOfArray", "UnusedDeclaration" })
 public class CandidateView extends View
 {
     private static final int OUT_OF_BOUNDS = -1;
@@ -35,7 +37,7 @@ public class CandidateView extends View
 
     private static final int X_GAP = 10;
 
-    private static final List<String> EMPTY_LIST = new ArrayList<String>();
+    private static final List<String> EMPTY_LIST = new ArrayList<>();
 
     private int mColorNormal;
     private int mColorRecommended;
@@ -51,9 +53,8 @@ public class CandidateView extends View
 
     /**
      * Construct a CandidateView for showing suggested words for completion.
-     *
-     * @param context
      */
+    @SuppressWarnings("deprecation")
     public CandidateView( Context context ) {
         super( context );
         mSelectionHighlight = context.getResources().getDrawable(
@@ -108,8 +109,6 @@ public class CandidateView extends View
 
     /**
      * A connection back to the service to communicate with the text field
-     *
-     * @param listener
      */
     public void setService( SoftKeyboard listener ) {
         mService = listener;
@@ -231,7 +230,7 @@ public class CandidateView extends View
                                 boolean typedWordValid ) {
         clear();
         if( suggestions != null ) {
-            mSuggestions = new ArrayList<String>( suggestions );
+            mSuggestions = new ArrayList<>( suggestions );
         }
         mTypedWordValid = typedWordValid;
         scrollTo( 0, 0 );
@@ -250,7 +249,7 @@ public class CandidateView extends View
     }
 
     @Override
-    public boolean onTouchEvent( MotionEvent me ) {
+    public boolean onTouchEvent( @NotNull MotionEvent me ) {
 
         if( mGestureDetector.onTouchEvent( me ) ) {
             return true;
@@ -293,8 +292,6 @@ public class CandidateView extends View
     /**
      * For flick through from keyboard, call this method with the x coordinate of the flick
      * gesture.
-     *
-     * @param x
      */
     public void takeSuggestionAt( float x ) {
         mTouchX = (int)x;
