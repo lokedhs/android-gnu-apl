@@ -12,4 +12,5 @@
     <string name="settings_name">Settings</string>
     <string name="label_subtype_generic">APL %s</string>
     <string name="label_subtype_en_GB">APL (GB)</string>
+    <string name="save_workspace">Save workspace</string>
 </resources>
