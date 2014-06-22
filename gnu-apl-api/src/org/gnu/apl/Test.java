@@ -6,7 +6,7 @@ public class Test
 {
     public static void main( String[] args ) {
         try {
-            Native.init();
+            Native.init( "foo" );
 
             StringWriter cin = new StringWriter();
             StringWriter cout = new StringWriter();

@@ -10,10 +10,10 @@ extern "C" {
 /*
  * Class:     org_gnu_apl_Native
  * Method:    init
- * Signature: ()I
+ * Signature: (Ljava/lang/String;)I
  */
 JNIEXPORT jint JNICALL Java_org_gnu_apl_Native_init
-  (JNIEnv *, jclass);
+  (JNIEnv *, jclass, jstring);
 
 /*
  * Class:     org_gnu_apl_Native

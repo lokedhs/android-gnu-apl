@@ -3,6 +3,7 @@ package com.dhsdevelopments.aplandroid;
 import org.gnu.apl.AplException;
 import org.gnu.apl.Native;
 
+import java.io.File;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,8 +18,8 @@ public class AplNative
     private BlockingQueue<EvalRequest> evalQueue = new LinkedBlockingQueue<>();
     private AplEvalThread evalThread;
 
-    public AplNative() {
-        Native.init();
+    public AplNative( File path ) {
+        Native.init( path.getPath() );
         evalThread = new AplEvalThread();
         evalThread.start();
     }

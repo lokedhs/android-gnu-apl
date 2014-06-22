@@ -6,8 +6,12 @@ export CXX=arm-linux-androideabi-g++
 
 Configure GNU APL:
 
+CXXFLAGS='-g -fPIC' ./configure --host=x86_64-linux --build=arm --prefix=$HOME/prog/android-gnu-apl/client/assets/dist
+
 CXXFLAGS='-g -fPIC' ./configure --host=x86_64-linux --build=arm --with-android
 make
+
+(setenv "PATH" (concat (expand-file-name "~/src/android-toolchain/bin") ":" (getenv "PATH")))
 
 Keyboard layout experiments:
 

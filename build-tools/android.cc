@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <string.h>
+#include <stdlib.h>
 
 #include "android.hh"
 #include "utils.hh"
@@ -112,9 +113,13 @@ std::ostream UERR( &uerr_streambuf );
 
 int init_apl( int argc, const char *argv[] );
 
-JNIEXPORT jint JNICALL Java_org_gnu_apl_Native_init( JNIEnv *env, jclass )
+JNIEXPORT jint JNICALL Java_org_gnu_apl_Native_init( JNIEnv *env, jclass, jstring path_jstring )
 {
     const char *argv[] = { "apl", "--silent", "--rawCIN", NULL };
+
+    JniStringWrapper path_string( env, path_jstring );
+
+    setenv( "APL_LIB_ROOT", path_string.get_string(), 1 );
 
     jclass javaIoWriterCl = env->FindClass( "java/io/Writer" );
     if( javaIoWriterCl == NULL ) {

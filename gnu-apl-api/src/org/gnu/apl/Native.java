@@ -1,6 +1,5 @@
 package org.gnu.apl;
 
-import java.io.StringWriter;
 import java.io.Writer;
 
 public class Native
@@ -9,7 +8,7 @@ public class Native
         System.loadLibrary( "apl" );
     }
 
-    public static native int init();
+    public static native int init( String files );
 
     public static native AplValue evalExpression( String expr ) throws AplException;
 

@@ -1,0 +1,282 @@
+###############################################################################
+#
+# this file contains user preferences for GNU APL.
+#
+# It should live in:
+#
+# (1) in folder gnu-apl of the system configuration directory. or
+# (2) in folder .gnu-apl in the user's home
+#
+# In both cases the file name should be 'preferences'
+#
+# The system configuration directory is usually /etc or /etc/local
+# It can be overridden by  ./configure --sysconfdir=something-else
+#
+# If both files are present then (1) is read before (2) so that for
+# duplicate settings in both files (2) prevails.
+#
+# Command line options take precedence over settings in any of these files.
+#
+# The initial content of this files contains all possible settings, but
+# commented out. You should not remove lines but rather comment or
+# uncomment them.
+#
+
+
+###############################################################################
+#
+# WELCOME MESSAGE
+#
+# Print (or don't) a welcome message on start-up
+#
+# The corresponding command line options is --silent
+#
+  Welcome       Yes	(default)
+# Welcome       No
+
+
+###############################################################################
+#
+# OUTPUT COLORING
+#
+# Output coloring can cause problems when, for example:
+#
+# (a) you run GNU APL as script
+# (b) you use a black background
+# (c) you run GNU APL from emacs
+# (d) you run GNU APL from a different terminal than color xterm
+#
+# In case (a) you should use the --script command line option and
+# leave Color as is.
+#
+# In cases (b), (c), and (d) you can uncomment the 'Color No' line below.
+# This only affects the initial state of output coloring; you can
+# re-enable colors later with APL command ]XTERM ON.
+#
+# The corresponding command line options are --Color and --noColor
+#
+# If your terminal does not understand the ANSI escape sequences,
+# or if you don't like to provide escape sequences, then you can set Color
+# to "curses" and set color numbers instead of escape sequences below. This
+# requires that certain environment variables (e.g. TERM) are set properly
+# and that your terminfo database contains the terminal you use.
+#
+  Color         ANSI (default)
+# Color 	CURSES
+# Color 	No
+#
+# If you want to disable coloring initially, but switch to curses if the
+# command ]COLOR (or the equivalent but now obsolete command ]XTERM)
+# is given later on, then you can give the color command twice:
+#
+# Color 	CURSES
+# Color 	No
+#
+
+
+###############################################################################
+#
+# OUTPUT COLOR ESCAPE SEQUENCES FOR ANSI TERMINALS
+#
+# Output coloring is implemented as follows:
+#
+# There are 4 output channels called CIN, COUT, CERR, and UERR
+#
+# CIN  is the echo of the input typed by the user,
+# COUT is the normal output of the APL interpreter,
+# CERR is additional error information, in particular logging.
+# UERR is output of the APL interpreter cotaining error messages,
+#
+# CIN, COUT, and UERR appear on stdout while CERR appears on stderr.
+# Normally stdout and stderr are both displayed on the same terminal,
+# but output redirection in the shell can make a difference.
+#
+# When the interpreter changes from one output channel to another, for
+# instance from CIN to COUT after the user has entered a line, then an
+# escape sequence (actually, any short sequence of characters) is sent
+# to the real output channel (i,e. stdout or stderr). The new channel
+# determines which sequence is sent:
+#
+# CIN:   CIN-SEQUENCE  CLEAR-EOL
+# COUT:  COUT-SEQUENCE CLEAR-EOL
+# CERR:  CERR-SEQUENCE CLEAR-EOL
+#UCERR:  UERR-SEQUENCE CLEAR-EOL
+#
+# In addition, when the interpreter exists, then a sequence
+#
+#	RESET-SEQUENCE CLEAR-EOL
+#
+# is sent which should set the colors to their initial state.
+#
+# The reason for sending CLEAR-EOL (i.e. clear to end of line) is to color
+# the entire next line not only the chars printed on the next line.
+#
+# Unfortunately it is difficult, if not impossible, to read the current
+# color setting from the terminal. Therefore the following is assumed:
+#
+# "GNU APL is started in a color xterm with white background".
+#
+# Color xterm is a VT100 (or ANSI) compatible terminal emulation.
+# If this assumption is correct, then everything should be fine. Otherwise
+# you may want to change the escape sequence sent to the terminal below.
+# The numbers below are the decimal values of the bytes sent to the terminal;
+# 27 is the escape character, for example. In order to change some or all
+# sequences, uncomment the corresponding line and change the hex numbers
+# (most likely the columns background and foreground).
+# Each sequence can be up to 20 characters long.
+#
+# The default setting (i.e. for a white background) is this:
+#
+#               VT100:          foreground        background
+#                               color    |        |    color
+#                                        V        V 
+# //                    ESC  [  0  ;  3 fg  ;  4 bg  m
+# CIN-SEQUENCE           1b 5b 30 3b 33 30 3b 34 37 6d    // ESC [0;30;47m
+# COUT-SEQUENCE          1b 5b 30 3b 33 30 3b 34 38 6d    // ESC [0;30;48m
+# CERR-SEQUENCE          1b 5b 30 3b 33 35 3b 34 38 6d    // ESC [0;35;48m
+# UERR-SEQUENCE          1b 5b 30 3b 33 35 3b 34 38 6d    // ESC [0;35;48m
+# RESET-SEQUENCE         1b 5b 30 3b 33 38 3b 34 38 6d    // ESC [0;38;48m
+# CLEAR-EOL-SEQUENCE     1b 5b 4B                         // ESC [K
+#
+# On a black background (still assuming VT100 so that the CLEAR-EOL-SEQUENCE
+# does not need to be re-defined), the following may be more suitable:
+#
+# CIN-SEQUENCE           1b 5b 30 3b 33 32 3b 34 30 6d    // ESC [0;32;40m
+# COUT-SEQUENCE          1b 5b 30 3b 33 37 3b 34 30 6d    // ESC [0;37;40m
+# CERR-SEQUENCE          1b 5b 30 3b 33 31 3b 34 30 6d    // ESC [0;31;40m
+# UERR-SEQUENCE          1b 5b 30 3b 33 31 3b 34 30 6d    // ESC [0;31;40m
+# RESET-SEQUENCE         1b 5b 30 3b 33 37 3b 34 30 6d    // ESC [0;37;48m
+#
+#
+
+
+###############################################################################
+#
+# OUTPUT COLOR NUMBER FOR CURSES
+#
+# There is second way of specifying colors that uses the curses library.
+# Instead of specifying the escape sequences sent to the terminal you
+# only need to specify the colors wanted and curses will provide the escape
+# sequences needed.
+#
+# Numbers for colors seem to be (nota bene: the author is color-blind):
+#
+# 0: black
+# 1: blue
+# 2: green
+# 3: cyan
+# 4: red
+# 5: magenta
+# 6: yellow
+# 7: white
+#
+# The colors are specified as numbers like this:
+#
+# CIN-FOREGROUND  0
+# CIN-BACKGROUND  7
+# COUT-FOREGROUND 2
+# COUT-BACKGROUND 7
+# CERR-FOREGROUND 5
+# CERR-BACKGROUND 8
+# UERR-FOREGROUND 5
+# UERR-BACKGROUND 8
+#
+# or, for dark background:
+#
+# CIN-FOREGROUND  2
+# CIN-BACKGROUND  0
+# COUT-FOREGROUND 7
+# COUT-BACKGROUND 0
+# CERR-FOREGROUND 5
+# CERR-BACKGROUND 0
+# UERR-FOREGROUND 5
+# UERR-BACKGROUND 0
+#
+# Normally the two methods (escape sequences vs. color numbers) shall not
+# be mixed. If they are mixed then the last entry in this file determines
+# which method will be used. Also, the numbers for colors are different
+# in both methods.
+#
+
+
+###############################################################################
+#
+# SHARED VARIABLES
+#
+# shared variables ⎕SVO, ⎕SVR, ... fork a helper process (APnnn) to
+# communicate with other APL processors. If you do not need these functions
+# then you can prevent starting of APnnn by setting SharedVars to Disabled.
+# If SharedVars are disabled then GNU APL starts a little faster and, of
+# course, ⎕SVO and friends won't work.
+#
+# The corresponding command line options are --SV and --noSV
+#
+  SharedVars    Enabled	    (default)
+# SharedVars    Disabled
+
+
+###############################################################################
+#
+# LOGGING FACILITIES
+#
+# If dynamic logging is disabled then these settings have no effect.
+#
+# Otherwise you can specify the Logging facilities (numbered 1-37 or more)
+# that shall be turned on when the APL interpreter starts, This option can
+# be used several times.
+#
+# See command ]LOG for available logging facilities
+#
+# The corresponding command line option is -l <num>
+#
+# Logging 1
+# Logging 2
+# ...
+# Logging 37
+
+
+###############################################################################
+#
+# GNU APL uses library numbers from 0 to 0 in commands )LOAD, )SAVE, and )COPY,
+# for example:
+#
+# )LOAD 1 workspace
+#
+# Commands )IN and )OUT use library number 0 implicitly;
+# )LOAD, )SAVE, and )COPY use  library number 0 implicitly when no
+# library number is given.
+#
+# The directories corresponding to the library numbers can be configured below.
+# library numbers 3, 4, and 5 are used (and overridden) libraries shipped with
+# GNU APL
+#
+# LIBREF-0 /home/xyz/my-own-libs
+# LIBREF-1 /home/xyz/my-group-libs
+# LIBREF-2 /group/abc/other-libs
+  LIBREF-3 /usr/local/lib/apl/wslib3
+  LIBREF-4 /usr/local/lib/apl/wslib4
+  LIBREF-5 /usr/local/lib/apl/wslib5
+# LIBREF-6 /usr/lib/gnu-apl/lib-6
+# LIBREF-7 /usr/lib/gnu-apl/lib-7
+# LIBREF-8 /usr/lib/gnu-apl/lib-8
+# LIBREF-9 /usr/lib/gnu-apl/lib-9
+#
+
+###############################################################################
+#
+# READLINE HISTORY PARAMETERS
+#
+# GNU APL normally uses GNU Readline for obtaining input from the user.
+# Below the number of history lines and the location of the history file 
+# can be configured.
+#
+READLINE_HISTORY_LEN  500
+READLINE_HISTORY_PATH .apl.history
+
+
+###############################################################################
+#
+# CREATE BACKUP BEFORE )SAVE or )DUMP WOKRSPACE
+#
+BACKUP_BEFORE_SAVE yes
+
