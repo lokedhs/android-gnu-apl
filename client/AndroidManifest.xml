@@ -3,7 +3,7 @@
           package="com.dhsdevelopments.aplandroid"
           android:versionCode="1"
           android:versionName="1.0">
-    <uses-sdk android:minSdkVersion="16" android:targetSdkVersion="19"/>
+    <uses-sdk android:minSdkVersion="19" android:targetSdkVersion="19"/>
     <application android:label="@string/app_name" android:icon="@drawable/ic_launcher" android:name="AplAndroidApp"
                  android:allowBackup="true">
         <activity android:name="Interpreter"
