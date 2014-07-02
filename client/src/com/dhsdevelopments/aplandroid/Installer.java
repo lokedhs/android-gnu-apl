@@ -54,7 +54,6 @@ public class Installer
         }
     }
 
-    @SuppressWarnings("TryFinallyCanBeTryWithResources")
     private static void copyFile( AssetManager am, String srcRoot, File destRoot, String dir, String fileName ) throws IOException {
         InputStream in = am.open( srcRoot + "/" + dir + "/" + fileName );
         try {
